@@ -41,23 +41,24 @@ def kafkaStream(topic, group = KAFKA_GROUP, port = KAFKA_PORT):
 
 # returns data as a List of (y, x) Tuples, where x is a Vector
 def getFromTopic(topic):
-	# Actual Data streamed from Kafka:
-	# data = []
-	# for message in kafkaStream(topic=topic):
-	# 	if message.key == "END":
-	# 		break
-	# 	y = message.key
-	# 	x = Vectors.dense(message.value.split(" "))
-	# 	data_point = (y, x)
-	# 	data.extend(data_point)
+	Actual Data streamed from Kafka:
+	data = []
+	for message in kafkaStream(topic=topic):
+		if message.key == "END":
+	 		break
+	 	y = message.key
+	 	x = Vectors.dense(message.value.split(" "))
+	 	data_point = (y, x)
+	 	data.extend(data_point)
 
 	# Sample Data: use for testing purposes
-	data = [
-	(1.0, Vectors.dense(2.0)),
-	(1.0, Vectors.dense(3.0)),
-	(1.0, Vectors.dense(4.0)),
-	(2.0, Vectors.dense(5.0)),
-	]
+	#data = [
+	#(1.0, Vectors.dense(2.0)),
+	#(1.0, Vectors.dense(3.0)),
+	#(1.0, Vectors.dense(4.0)),
+	#(2.0, Vectors.dense(5.0)),
+	#]
+	
 	return data
 
 def toDataFrame(data):

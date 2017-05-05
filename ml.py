@@ -1,4 +1,4 @@
-#	DOCUMENTATION	#
+# DOCUMENTATION
 #		How to execute:
 #			spark-submit ml.py
 #		Data Format in Kafka:
@@ -8,14 +8,14 @@
 #				y = 1.0		x = 1.0 2.0 3.0
 
 
-#	SOURCES		#
+# SOURCES
 #		https://spark.apache.org/docs/1.6.2/api/python/pyspark.sql.html
 #		http://spark.apache.org/docs/1.6.1/api/python/pyspark.ml.html
 #		https://spark.apache.org/docs/1.6.1/ml-classification-regression.html
 #		spark.apache.org/docs/1.6.1/ml-guide.html
 
 
-#	IMPORTS		#
+# IMPORTS
 from pyspark import SparkContext
 from pyspark.sql import SQLContext
 from pyspark.mllib.linalg import Vectors
@@ -26,19 +26,20 @@ from random import shuffle
 import os
 
 
-#	CONSTANTS	#
+# CONSTANTS
 sc = SparkContext("local", "ml", pyFiles=['ml.py'])
 sqlContext = SQLContext(sc)
-KAFKA_TOPIC = 'my-topic'
+KAFKA_TOPIC = 'regression-data'
 KAFKA_GROUP = 'my-group'
 KAFKA_PORT = 'localhost:9092'
 
 
-#	FUNCTIONS	#
+# FUNCTIONS
 def kafkaStream(topic, group = KAFKA_GROUP, port = KAFKA_PORT):
 	return 	KafkaConsumer(topic,
 			group_id=group,
-			bootstrap_servers=[port])
+			bootstrap_servers=[port],
+      		auto_offset_reset='earliest')
 
 # returns a List of (y, x) Tuples, where x is a Vector
 def getFromTopic(topic):
@@ -125,7 +126,7 @@ def root_mean_square_error(model, testing_df):
 	return rmse
 
 
-#	MAIN METHOD	#
+# MAIN METHOD
 if __name__ == "__main__":
 	data = toDataFrame(getFromTopic(KAFKA_TOPIC))
 	test_cross_validation(data)

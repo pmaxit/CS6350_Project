@@ -11,13 +11,12 @@ Another program (currently unwritten) will consume from the keywords topic in Ka
 
 The keywords will be queried against Google Trends (which lacks an official API, so it must be done manually).
 
-A program will be written to output data points, where the x-values will be the Search Volume Index of each of the keywords during a given week, and the y-value will be the stock market performance for that week. The program will then export the data points to the "regression" Kafka topic. This program should be pretty easy since it's literally just reading in data from a few csv's, mergng them, and outputing to Kafka.
+Another program (currently unwritten) will be written to output data points, where the x-values will be the Search Volume Index of each of the keywords during a given week, and the y-value will be the stock market performance for that week. The program will then export the data points to the "regression" Kafka topic. This program should be pretty easy since it's literally just reading in data from a few csv's, mergng them, and outputing to Kafka.
 
 Finally, the ml.py script reads in the data points, executes multiple forms of machine learning (currently, we have both Linear and Decision Tree Regression), and cross-validates the model to test its performance.
 
 
-
-# Kafja Topics:
+# Kafka Topics:
 
 ## keywords
 

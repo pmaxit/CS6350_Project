@@ -4,15 +4,14 @@
 # IMPORTS
 import requests
 import csv
-from kafka import KafkaProducer
-from kafka.errors import KafkaError
+#from kafka import KafkaProducer
+#from kafka.errors import KafkaError
 
 # CONSTANTS
 TIMEOUT = 10
 COMPANIES = ["Apple", "Amazon", "Facebook", "Google", "Microsoft"]
 SOURCES = ["snippet", "lead_paragraph", "abstract"]
 NUM = {company: 0 for company in COMPANIES}
-OUTPUTFILENAME = "1_1_16.csv"
 KAFKA_TOPIC = 'keywords'
 KAFKA_GROUP = 'my-group'
 KAFKA_PORT = 'localhost:9092'
@@ -29,13 +28,7 @@ def getArticles(year="2016", month="1"):
   return articles
 
 def summarize(article):
-  summary = {company: False for company in COMPANIES}
-  summary["text"] = getText()
-  for keyword in article["keywords"]:
-    for company in COMPANIES:
-      if company.lower() in keyword["value"].lower():
-        summary[company] = True
-        NUM[company] = NUM[company] + 1
+  summary = { "text" : getText() }
   return summary
 
 def getText():
@@ -45,18 +38,18 @@ def getText():
       text = text + " " + article[source].encode('utf-8')
   return text
 
-def output(summaries):
+def output(summaries,outputfilename):
   print "Total # of Articles: " + str(len(summaries))
   print NUM
-  writeToCSV(summaries)
-  sendToKafka(summaries)
+  writeToCSV(summaries, outputfilename)
+  #sendToKafka(summaries)
 
-def writeToCSV(summaries):
-  with open(OUTPUTFILENAME, 'wb') as outputFile:
+def writeToCSV(summaries, outputfilename):
+  with open(outputfilename, 'wb') as outputFile:
     writer = csv.DictWriter(outputFile, fieldnames = summaries[0].keys())
     writer.writeheader()
     writer.writerows(summaries)
-  print "Data has been exported to " + OUTPUTFILENAME
+  print "Data has been exported to " + outputfilename
 
 def sendToKafka(summaries):
   producer = KafkaProducer(bootstrap_servers=[KAFKA_PORT])
@@ -67,6 +60,10 @@ def sendToKafka(summaries):
 
 # MAIN METHOD
 if __name__ == "__main__":
-  articles = getArticles()
-  summaries = [summarize(article) for article in articles]
-  output(summaries)
+    year = '2012'
+    for month in range(1,13):
+        outputfilename = str(month) + "_" + year +".csv"
+        print outputfilename
+        articles = getArticles(year='2012',month=str(month))
+        summaries = [summarize(article) for article in articles]
+        output(summaries, outputfilename)

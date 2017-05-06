@@ -4,7 +4,7 @@ import calendar, datetime
 
 import pandas as pd
 
-df = pd.read_csv("data/aapl.csv")
+df = pd.read_csv("data/stock_market_data/aapl.csv")
 svi = pd.read_csv("data/googletrends.csv")
 
 def month_to_num(shortMonth):
@@ -64,7 +64,6 @@ df1 = df.groupby(['Year','Mon','Week']).mean().reset_index()
 svi['Year'], svi['Mon'], svi['Day'] = svi.iloc[:,0].str.split('-').str
 svi['Week'] = svi.ix[:,0].apply(convert_to_week2)
 
-print df1.head()
 df2 = pd.merge(df1, svi, how='inner', on=['Year','Mon','Week'])
 
 df2.to_csv("test.csv")

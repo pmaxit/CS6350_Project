@@ -21,13 +21,14 @@ if __name__ == '__main__':
     # set k clusters to be 1/100th of the vocabulary size or average 100 words per cluster
 
     word_vectors  = model.wv.syn0
-    num_clusters  = word_vectors.shape[0] / 20
-
+    print word_vectors.shape
+    num_clusters  = word_vectors.shape[0] / 250
+    print num_clusters
 
     # initialize k-means object and use it to extract centroids
     print 'Running k means'
     kmeans_clustering = KMeans( n_clusters = num_clusters)
-    idx = kmeans_clustering.fit(word_vectors)
+    idx = kmeans_clustering.fit_predict(word_vectors)
 
     end = time.time()
     elapsed = end - start
@@ -36,18 +37,19 @@ if __name__ == '__main__':
 
     #Create a word / index dictionary, mapping each vocabulary word to a cluster number
     word_centroid_map = dict(zip( model.wv.index2word, idx))
+    f = open('output','w')
 
-    # print first 10 clusters
-    for cluster in xrange(0,10):
+    # print first 1000 clusters
+    for cluster in xrange(0,num_clusters):
         # print the cluster number
 
         print "Cluster %d" %cluster
-
+        f.write("\nCluster %d\n"%cluster)
         words = []
         for i in xrange(0, len(word_centroid_map.values())):
             if ( word_centroid_map.values()[i] == cluster):
                 words.append(word_centroid_map.keys()[i])
-        print words
-
-
-
+        #print words
+        f.write(','.join(words))
+        f.flush()
+    f.close()

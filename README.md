@@ -15,3 +15,9 @@ vector. We then clustered these vectors together into (k=120) classes to obtain 
 
 # Data Processing 
 Once we have set of keywords we are intersted in, we then download search volume interest for those words from google trends publicly available service. This serves as one of our input features to predict stock market. Since stock market is generally volatile, to measure the accuracy of the model we are calculating weekly log returns and stock volatility for every week and training a model to predict the same based on search volume interest of above keyword set. 
+
+
+# Machine Learning
+Data format contains stock price information, weekly log returns, stock volatility and search volume indices of ~800 words. Since number of features are very large, there will be possibility of overfitting if we try to build a model directly from the data. Hence we need to look for Principal component analysis for dimensionality reduction. We will also look at correlation factor to remove columns which has less correlation with the response target. 
+
+With all dimensionality reduction, we should get ~40 keywords in our final dataset. It can then be fed to linear regression model to measure RMSE.

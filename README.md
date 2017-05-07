@@ -10,7 +10,7 @@ a future week using as input Google Trends data for those keywords in the previo
 
 # Architecture
 
-We started with 20 set of "seed words" ( for example internet, computers, information etc. ) related to technology to query the New York Times (NYT) Article Search API, which allows access to the abstract, title, and content of all articles in the NYT from 1851. We searched published articles from January 1st, 2012 and created a corpus of 532,000 articles to be used for semantic vector generation using Google's Word2vec tool. We generated total list of 30287 words each having 300 dimension
+We started with 20 set of "seed words" ( for example internet, computers, information etc. ) related to technology to query the New York Times (NYT) Article Search API, which allows access to the abstract, title, and content of all articles in the NYT from 1851. We searched published articles from January 1st, 2012 and created a corpus of 1 million articles to be used for semantic vector generation using Google's Word2vec tool. We generated total list of 30287 words each having 300 dimension
 vector. We then clustered these vectors together into (k=120) classes to obtain similar set of words. Reason for choosing such a high "K" number is to get less than 500 words per cluster. We then handpicked one cluster which contained all our desired seed words and formed a distinct set of keywords to be used in market prediction.
 
 # Data Processing 
